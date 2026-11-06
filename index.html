@@ -42,6 +42,24 @@ button:active{transform:scale(.975)}[hidden]{display:none!important}
 @media(max-height:750px){.app{gap:7px;padding-top:calc(8px + env(safe-area-inset-top));padding-bottom:calc(9px + env(safe-area-inset-bottom))}.intro{min-height:53px}.intro h1{font-size:22px}.metric{padding:5px 6px}.metric .goal{font-size:18px;line-height:20px}.metric .current{margin-top:2px}.arena{min-height:100px}.dock{min-height:72px;padding:6px 8px 7px}.dockheader{margin-bottom:4px}.tile{height:49px}.tile .tile-paper{max-height:22px}.actionzone{min-height:43px}.bigbtn{height:40px}}
 @media(max-height:620px){.app{gap:5px}.intro{min-height:47px}.subtitle{display:none}.metric{padding:4px}.metric .goal{font-size:17px}.dockheader span{display:none}.tile{height:40px}.tile .tile-paper{max-height:18px}.actionzone{min-height:38px}.bigbtn{height:37px}.boardspace{inset:27px 9px 24px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+/* Color paper expresses the layer order; numeric feedback stays near the goal. */
+.dock{min-height:69px;padding:9px 10px}
+.tile{height:51px;gap:3px}
+.tile .layer-rank{display:none}
+.tile:not(:last-child):after{display:none}
+.metrics-header span{letter-spacing:0;white-space:nowrap}
+.metrics-header span b{font-weight:600;color:#b7b9ad;margin:0 2px}
+.metric{padding:8px 7px 7px}
+.metric .colorbar{width:19px;height:3px;margin-bottom:7px}
+.metric .countline{display:flex;align-items:baseline;justify-content:flex-start;gap:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.metric .current-count{font-size:21px;font-weight:820;letter-spacing:-.055em;line-height:1.08;color:#293b36}
+.metric .slash{font-size:10px;font-weight:550;color:#bcc3b8}
+.metric .goal{font-size:12px;font-weight:680;line-height:1.08;color:#9ca79b;letter-spacing:-.02em}
+.metric.hit{background:#f6f8f3;border-color:#cbd7cb}
+.metric.hit .current-count{color:#3e7664}
+@media(max-height:750px){.dock{min-height:61px;padding:6px 8px}.tile{height:47px}.metric{padding:6px 5px}.metric .colorbar{margin-bottom:5px}.metric .current-count{font-size:19px}.metric .goal{font-size:11px}}
+@media(max-height:620px){.dock{min-height:48px}.tile{height:39px}.metric{padding:5px 4px}.metric .current-count{font-size:17px}.metric .goal{font-size:10px}.metric .slash{font-size:9px}}
 </style>
 </head>
 <body>
@@ -54,9 +72,9 @@ button:active{transform:scale(.975)}[hidden]{display:none!important}
     <button id="soundButton" class="iconbtn" aria-label="音を切り替える" title="効果音"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
   </header>
   <section class="intro"><div class="kicker" id="chapter">01 · FIRST TOUCH</div><h1 id="title">たった一枚、動かす。</h1><p class="subtitle" id="subtitle">1枚だけ動かして、見える色の面積を合わせよう。</p></section>
-  <section class="metrics" aria-label="各色の見える面積"><div class="metrics-header"><strong>目標の面積</strong><span>色の形を見て考えよう</span></div><div id="metricrow" class="metricrow"></div></section>
+  <section class="metrics" aria-label="各色の見える面積"><div class="metrics-header"><strong>見える面積</strong><span>いま <b>／</b> 目標</span></div><div id="metricrow" class="metricrow" aria-live="off"></div></section>
   <section id="arena" class="arena"><div class="arena-head"><span class="beat"><i id="beatDot"></i><span id="beatText">ONE MOVE · 1枚だけ</span></span><em id="boardSize">5 × 4</em></div><div id="boardspace" class="boardspace"><div id="board" class="board"><div class="basegrid"></div></div></div><div id="arenaFoot" class="arena-footer">紙を1枚だけ選んで、すっと動かす</div></section>
-  <section class="dock"><div class="dockheader"><b>紙の重なり順</b><span>手前 <strong>→</strong> 奥（左ほど上）</span></div><div id="tray" class="tray" aria-label="左が一番上、右が一番下の紙"></div></section>
+  <section class="dock"><div id="tray" class="tray" aria-label="色紙を選んで動かす"></div></section>
   <section class="actionzone"><div id="actionNote" class="action-note"><strong>どの一枚を動かす？</strong>重なりを見て、考えてみよう。</div><button id="actionButton" class="bigbtn secondary" hidden>もう一度</button></section>
 </main>
 <div id="dragFloat" class="dragfloat" hidden></div>
@@ -128,25 +146,16 @@ const soundFx={ctx:null,out:null,buffers:{},last:{},pending:null,stats:{tick:0,p
 // The first direct touch unlocks sound on iOS Safari before the initial drag.
 document.addEventListener('pointerdown',()=>soundFx.init(),{capture:true,passive:true});
 function render(){const l=level();$('chapter').textContent=`${String(stage+1).padStart(2,'0')} · ${CHAPTERS[l.group]}`;$('title').textContent=l.title;$('stageNumber').textContent=String(stage+1).padStart(2,'0');$('stageCount').textContent=`/ ${LEVELS.length}`;$('subtitle').textContent=phase==='won'?'一枚の移動で、すべての面積がそろった。':'一枚の紙を何度でも動かして、見える色の面積を合わせよう。';$('boardSize').textContent=`${l.w} × ${l.h}`;$('beatText').textContent=phase==='won'?'PERFECT · 完成':'ONE MOVE · 自由に試そう';$('beatDot').className=phase==='won'?'win':'';$('arenaFoot').textContent=phase==='won'?'ぴたり。':active===null?'つかんで、動かして、考えよう':`${NAMES[active]}の紙を操作中`;renderMetrics();renderTray();renderBoard();renderAction();$('soundButton').classList.toggle('muted',!sound);$('soundButton').setAttribute('aria-label',sound?'効果音を消す':'効果音を鳴らす')}
-function renderMetrics(){const l=level();$('metricrow').style.setProperty('--num',l.dims.length);$('metricrow').innerHTML=l.target.map((goal,i)=>`<div class="metric ${phase==='won'?'hit':''}" style="--c:${PALETTE[i]}"><i class="colorbar"></i><div class="goal">${goal}</div></div>`).join('')}
-function renderTray(){
- const l=level(),f=Math.min(29/Math.max(...l.dims.map(d=>d[1])),44/Math.max(...l.dims.map(d=>d[0]))),n=l.dims.length;
- tray.style.setProperty('--num',n);
- // The z-order is fixed: the far-left miniature is the FRONT layer, not paper 0.
- tray.innerHTML=l.dims.map((_,j)=>n-1-j).map((i,rank)=>{
-  const[w,h]=l.dims[i],depth=rank===0?'いちばん上':rank===n-1?'土台':`上から${rank+1}枚目`;
-  const label=rank===0?'最上段':rank===n-1?'土台':`下から${n-1-rank+1}枚目`;
-  return `<div class="tile ${i===0?'fixed':''} ${i===active?'active':''}" data-paper="${i}" role="button" tabindex="0" aria-label="${depth}、${NAMES[i]}の紙 ${w}マス×${h}マス${i===0?'、固定':''}"><span class="layer-rank">${rank===0?'TOP':rank===n-1?'BASE':String(rank+1).padStart(2,'0')}</span><div class="tile-paper" style="width:${Math.max(8,w*f)}px;height:${Math.max(8,h*f)}px;--c:${PALETTE[i]};--mini-cell:${f}px"></div><small>${NAMES[i]}${i===0?' · 土台':''}</small></div>`
- }).join('')
-}
+function renderMetrics(){const l=level(),now=regions().counts;$('metricrow').style.setProperty('--num',l.dims.length);$('metricrow').innerHTML=l.target.map((goal,i)=>{const hit=now[i]===goal;return `<div class="metric ${hit?'hit':''}" style="--c:${PALETTE[i]}" aria-label="${NAMES[i]}、いま${now[i]}マス、目標${goal}マス"><i class="colorbar"></i><div class="countline"><strong class="current-count">${now[i]}</strong><span class="slash">／</span><span class="goal">${goal}</span></div></div>`}).join('')}
+function renderTray(){const l=level(),f=Math.min(29/Math.max(...l.dims.map(d=>d[1])),44/Math.max(...l.dims.map(d=>d[0]))),n=l.dims.length;tray.style.setProperty('--num',n);tray.innerHTML=l.dims.map((_,j)=>n-1-j).map(i=>{const[w,h]=l.dims[i];return `<div class="tile ${i===0?'fixed':''} ${i===active?'active':''}" data-paper="${i}" role="button" tabindex="0" aria-label="${NAMES[i]}の紙、${w}マス×${h}マス${i===0?'、固定された土台':''}"><div class="tile-paper" style="width:${Math.max(8,w*f)}px;height:${Math.max(8,h*f)}px;--c:${PALETTE[i]};--mini-cell:${f}px"></div><small>${NAMES[i]}</small></div>`}).join('')}
 function renderBoard(){const l=level();board.style.setProperty('--base',PALETTE[0]);board.innerHTML='<div class="basegrid"></div>'+positions.map((r,i)=>{if(i===0)return '';const[x,y,w,h]=r;return `<div class="paper ${i===active?'picked':''} ${drag?.changed&&drag.i===i?'preview':''}" data-paper="${i}" style="z-index:${i+1};left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px;--paper-color:${PALETTE[i]}"></div>`}).join('')+(active!==null?(()=>{const[x,y,w,h]=positions[active];return `<div class="focusring ${drag?.changed?'moving':''}" style="left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px;--focus-color:${PALETTE[active]}"></div>`})():'')}
 function renderAction(){const note=$('actionNote'),b=$('actionButton');if(phase==='won'){note.innerHTML='<strong>美しく、そろった。</strong>次の重なりを見つけよう。';b.hidden=false;b.classList.remove('secondary');b.textContent=stage===LEVELS.length-1?'ステージを選ぶ':'次の一枚 →'}else{note.innerHTML='<strong>何度でも動かせる。</strong>別の紙を試しても大丈夫。';b.hidden=true}}
 function fitBoard(){if(drag)return;const l=level(),space=$('boardspace'),maxW=space.clientWidth-12,maxH=space.clientHeight-12;if(maxW<=0||maxH<=0)return;cell=Math.min(57,maxW/l.w,maxH/l.h);board.style.width=`${l.w*cell}px`;board.style.height=`${l.h*cell}px`;board.style.setProperty('--cell',`${cell}px`);renderBoard()}
 function startDrag(e,i,source){if(i===0||drag)return;e.preventDefault();soundFx.play('pick');active=i;const r=positions[i],b=board.getBoundingClientRect(),p=({x:(e.clientX-b.left)/cell,y:(e.clientY-b.top)/cell});let ax=source==='board'?clamp(p.x-r[0],0,r[2]):r[2]/2;let ay=source==='board'?clamp(p.y-r[1],0,r[3]):r[3]/2;drag={id:e.pointerId,i,source,sx:e.clientX,sy:e.clientY,x:e.clientX,y:e.clientY,ax,ay,start:[...r],changed:false,proposed:[...r],out:false,lastR:[r[0],r[1]]};soundFx.init();renderTray();renderBoard()}
 function snapAxis(v,current,max){if(v>current+.63||v<current-.63)return clamp(Math.round(v),0,max);return current}
-function moveDrag(e){const d=drag;if(!d||e.pointerId!==d.id)return;e.preventDefault();d.x=e.clientX;d.y=e.clientY;if(!d.changed&&Math.hypot(d.x-d.sx,d.y-d.sy)<5)return;if(!d.changed){const initial=level().initial;for(let j=1;j<positions.length;j++)if(j!==d.i&&(positions[j][0]!==initial[j][0]||positions[j][1]!==initial[j][1]))positions[j]=[...initial[j]];}d.changed=true;const b=board.getBoundingClientRect(),l=level(),r=d.start;const dx=(e.clientX-b.left-d.ax*cell)/cell,dy=(e.clientY-b.top-d.ay*cell-16)/cell;d.out=e.clientX<b.left-55||e.clientX>b.right+55||e.clientY<b.top-55||e.clientY>b.bottom+55;
- if(!d.out){let px=snapAxis(dx,d.proposed[0],l.w-r[2]),py=snapAxis(dy,d.proposed[1],l.h-r[3]);if(px!==d.proposed[0]||py!==d.proposed[1]){d.proposed=[px,py,r[2],r[3]];positions[d.i]=[...d.proposed];soundFx.play('tick');renderBoard()}}const f=$('dragFloat');f.hidden=false;f.style.background=PALETTE[d.i];f.style.width=`${r[2]*cell}px`;f.style.height=`${r[3]*cell}px`;f.style.setProperty('--cell',`${cell}px`);f.style.left=`${e.clientX-d.ax*cell}px`;f.style.top=`${e.clientY-d.ay*cell-16}px`;f.style.opacity=d.out?'.12':'.33'}
-function cancelDrag(){if(!drag)return;positions[drag.i]=[...drag.start];drag=null;$('dragFloat').hidden=true;renderBoard()}
+function moveDrag(e){const d=drag;if(!d||e.pointerId!==d.id)return;e.preventDefault();d.x=e.clientX;d.y=e.clientY;if(!d.changed&&Math.hypot(d.x-d.sx,d.y-d.sy)<5)return;if(!d.changed){const initial=level().initial;for(let j=1;j<positions.length;j++)if(j!==d.i&&(positions[j][0]!==initial[j][0]||positions[j][1]!==initial[j][1]))positions[j]=[...initial[j]];renderMetrics();renderBoard()}d.changed=true;const b=board.getBoundingClientRect(),l=level(),r=d.start;const dx=(e.clientX-b.left-d.ax*cell)/cell,dy=(e.clientY-b.top-d.ay*cell-16)/cell;d.out=e.clientX<b.left-55||e.clientX>b.right+55||e.clientY<b.top-55||e.clientY>b.bottom+55;
+ if(!d.out){let px=snapAxis(dx,d.proposed[0],l.w-r[2]),py=snapAxis(dy,d.proposed[1],l.h-r[3]);if(px!==d.proposed[0]||py!==d.proposed[1]){d.proposed=[px,py,r[2],r[3]];positions[d.i]=[...d.proposed];soundFx.play('tick');renderBoard();renderMetrics()}}const f=$('dragFloat');f.hidden=false;f.style.background=PALETTE[d.i];f.style.width=`${r[2]*cell}px`;f.style.height=`${r[3]*cell}px`;f.style.setProperty('--cell',`${cell}px`);f.style.left=`${e.clientX-d.ax*cell}px`;f.style.top=`${e.clientY-d.ay*cell-16}px`;f.style.opacity=d.out?'.12':'.33'}
+function cancelDrag(){if(!drag)return;positions[drag.i]=[...drag.start];drag=null;$('dragFloat').hidden=true;renderBoard();renderMetrics()}
 function finishDrag(e,cancel=false){const d=drag;if(!d||e.pointerId!==d.id)return;drag=null;$('dragFloat').hidden=true;if(cancel||d.out||!d.changed){positions[d.i]=[...d.start];lastArea=regions().counts;phase='ready';render();return}const changed=d.proposed[0]!==d.start[0]||d.proposed[1]!==d.start[1];positions[d.i]=changed?[...d.proposed]:[...d.start];lastArea=regions().counts;const initial=level().initial;const shifted=positions.reduce((n,r,i)=>n+(i>0&&(r[0]!==initial[i][0]||r[1]!==initial[i][1])?1:0),0);phase=shifted===1&&lastArea.every((n,i)=>n===level().target[i])?'won':'ready';soundFx.play(phase==='won'?'win':changed?'place':'pick');if(phase==='won'){complete.add(stage);store();board.classList.remove('win');requestAnimationFrame(()=>board.classList.add('win'))}render();if(phase==='won'){board.classList.add('win');try{navigator.vibrate?.([6,25,7])}catch{}}}
 function resetMove(){cancelDrag();positions=clone(level().initial);phase='ready';history=null;active=null;lastArea=regions().counts;render();soundFx.play('pick')}
 function clickAction(){if(phase==='won'){soundFx.play('place');if(stage===LEVELS.length-1)openStages();else setup(stage+1)}}
