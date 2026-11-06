@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#f6f4ee">
-<title>PAPER STACK — ONE MOVE</title>
+<title>PAPER STACK — ONE MOVE · Refined</title>
 <style>
 :root{--bg:#f6f4ee;--surface:#fdfcf9;--ink:#273733;--mute:#85908b;--border:#e4e5dc;--accent:#577c6c;--r:24px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -25,15 +25,15 @@ button:active{transform:scale(.975)}[hidden]{display:none!important}
 .board{position:relative;flex:none;pointer-events:auto;touch-action:none;isolation:isolate;box-shadow:0 2px 0 #b5b3a3,0 8px 20px #37493d23;overflow:visible;border:1px solid #fff7;border-radius:1px;background:var(--base)}
 .board:after{content:"";position:absolute;inset:-1px;border:1px solid #43534e3b;pointer-events:none;z-index:90}
 .basegrid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(to right,#ffffff81 1px,transparent 1px),linear-gradient(to bottom,#ffffff81 1px,transparent 1px);background-size:var(--cell) var(--cell);opacity:.48;mix-blend-mode:screen;z-index:0}
-.paper{position:absolute;touch-action:none;cursor:grab;overflow:hidden;background:var(--paper-color);box-shadow:0 2px 3px #2b3b3330,inset 0 0 0 .6px #fff8,inset 0 -1px #15251e15;outline:.7px solid #ffffff40;outline-offset:-.7px;transform:translateZ(0);transition:filter .14s;will-change:top,left}
+.paper{position:absolute;touch-action:none;cursor:grab;overflow:hidden;background:var(--paper-color);box-shadow:0 2px 2px #24342936,0 3.5px 4px #2434291c,inset 0 0 0 .8px #fffa,inset 0 -1px #15251e16;outline:.7px solid #ffffff40;outline-offset:-.7px;transform:translateZ(0);transition:filter .14s;will-change:top,left}
 .paper:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(140deg,#ffffff16,transparent 39%,#11221a0b 100%);mix-blend-mode:soft-light}
 .paper:after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(to right,#ffffff95 1px,transparent 1px),linear-gradient(to bottom,#ffffff95 1px,transparent 1px);background-size:var(--cell) var(--cell);opacity:.5;mix-blend-mode:screen}
 .paper.picked:after{opacity:.83}.paper.preview{filter:brightness(1.035)}.paper.preview:after{opacity:.78}
-.focusring{position:absolute;pointer-events:none;border:1.5px solid #2d736d;box-shadow:0 0 0 1px #fdfcf9b5,0 0 0 3px #2d736d23;z-index:65}.focusring:after{content:"";position:absolute;right:-3px;bottom:-3px;width:5px;height:5px;background:#fefefa;border:1px solid #3c776b;border-radius:50%}.focusring.moving{border-style:dashed}
+.focusring{position:absolute;pointer-events:none;border:1.5px solid #2d736d;box-shadow:0 0 0 1px #fdfcf9b5,0 0 0 3px #2d736d23;z-index:65}.focusring:after{content:"";position:absolute;right:-3px;bottom:-3px;width:5px;height:5px;background:#fefefa;border:1px solid #3c776b;border-radius:50%}.focusring.moving{border-style:dashed}.focusring:before{content:"";position:absolute;inset:0;background:var(--focus-color);opacity:.09;pointer-events:none}.focusring{--focus-color:#fff}
 .arena-footer{position:absolute;bottom:12px;left:13px;right:13px;text-align:center;color:#a7afa4;font-size:10px;font-weight:620;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;letter-spacing:.03em}.arena-footer b{color:#60776a}
 .dock{flex:none;min-height:87px;border:1px solid #e7e8dc;border-radius:18px;background:#fdfcf9;padding:9px 9px 10px;box-shadow:0 3px 11px #69705a09}
-.dockheader{display:flex;align-items:center;justify-content:space-between;margin:0 3px 7px}.dockheader b{font-size:10px;font-weight:850;color:#64776a;letter-spacing:.04em}.dockheader span{font-size:9px;color:#aab1a6}
-.tray{display:grid;grid-template-columns:repeat(var(--num),minmax(0,1fr));gap:7px;touch-action:none}.tile{min-width:0;height:57px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#f6f7f1;border:1px solid #eceee6;border-radius:11px;touch-action:none;position:relative}.tile.active{background:#eaf1eb;border-color:#9db9a6;box-shadow:0 0 0 1px #a7c1ae4a}.tile.fixed{opacity:.74}.tile .tile-paper{flex:none;max-height:30px;background:var(--c);position:relative;border:.7px solid #fff9;box-shadow:1px 2px 2px #2c3b321e;overflow:hidden}.tile-paper:after{position:absolute;content:"";inset:0;background-image:linear-gradient(to right,#ffffffb9 1px,transparent 1px),linear-gradient(to bottom,#ffffffb9 1px,transparent 1px);background-size:var(--mini-cell) var(--mini-cell);opacity:.7;mix-blend-mode:screen}.tile small{color:#687a6e;font-size:9px;white-space:nowrap;font-weight:720}.tile.fixed small{color:#969f95}.tile .lock{position:absolute;right:5px;top:4px;width:10px;height:10px;opacity:.35}
+.dockheader{display:flex;align-items:center;justify-content:space-between;margin:0 3px 7px}.dockheader b{font-size:10px;font-weight:850;color:#64776a;letter-spacing:.04em}.dockheader span{font-size:10px;color:#87958a;font-weight:730;white-space:nowrap}.dockheader span strong{color:#567566;padding:0 3px;font-size:13px}
+.tray{display:grid;grid-template-columns:repeat(var(--num),minmax(0,1fr));gap:7px;touch-action:none}.tile{min-width:0;height:57px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#f6f7f1;border:1px solid #eceee6;border-radius:11px;touch-action:none;position:relative}.tile.active{background:#eaf1eb;border-color:#9db9a6;box-shadow:0 0 0 1px #a7c1ae4a}.tile.fixed{background:#f1f1e9;border-color:#e2e5d9}.tile .tile-paper{flex:none;max-height:30px;background:var(--c);position:relative;border:.7px solid #fff9;box-shadow:1px 2px 2px #2c3b321e;overflow:hidden}.tile-paper:after{position:absolute;content:"";inset:0;background-image:linear-gradient(to right,#ffffffb9 1px,transparent 1px),linear-gradient(to bottom,#ffffffb9 1px,transparent 1px);background-size:var(--mini-cell) var(--mini-cell);opacity:.7;mix-blend-mode:screen}.tile small{color:#61786c;font-size:9px;white-space:nowrap;font-weight:760}.tile .layer-rank{position:absolute;left:6px;top:5px;font-size:8px;font-weight:880;color:#77897d;line-height:1;letter-spacing:.02em}.tile:first-child .layer-rank{color:#316e5d}.tile .tile-paper{transition:transform .12s,box-shadow .12s}.tile.active .tile-paper{transform:translateY(-2px);box-shadow:0 4px 6px #2c3b3235}.tile:not(:last-child):after{content:"";position:absolute;right:-7px;top:50%;width:7px;height:1px;background:#cbd8cd;pointer-events:none;z-index:1}.tile.fixed small{color:#849087}.tile .lock{position:absolute;right:5px;top:4px;width:10px;height:10px;opacity:.35}
 .actionzone{flex:none;min-height:52px;display:flex;align-items:center;gap:8px}.action-note{flex:1;min-width:0;color:#879288;font-size:11px;line-height:1.4;font-weight:650}.action-note strong{display:block;color:#4f6c5c;font-size:12px;font-weight:820}.bigbtn{height:45px;min-width:122px;flex:none;padding:0 17px;border:0;border-radius:13px;color:#fff;background:#426d5d;font-size:12px;font-weight:820;letter-spacing:.02em;box-shadow:0 3px 9px #426d5d25}.bigbtn.secondary{background:#edf1e8;border:1px solid #dce7dc;color:#416a59;box-shadow:none}.bigbtn:active{transform:scale(.97)}
 .dragfloat{position:fixed;z-index:120;pointer-events:none;opacity:.37;box-shadow:0 15px 13px #2c3b3345,inset 0 0 0 .7px #fff9;outline:1px solid #fff8;overflow:hidden;transform:translate3d(0,0,0);border:1px solid #ffffff60;filter:saturate(1.05)}.dragfloat:after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right,#ffffffc1 1px,transparent 1px),linear-gradient(to bottom,#ffffffc1 1px,transparent 1px);background-size:var(--cell) var(--cell);opacity:.68;mix-blend-mode:screen}
 .dust{position:absolute;inset:0;pointer-events:none;z-index:75}.dust i{position:absolute;animation:glimpse .48s ease-out forwards;background:#ffffff31;border:1px solid #ffffff5b}@keyframes glimpse{0%{opacity:.9}100%{opacity:0}}
@@ -56,7 +56,7 @@ button:active{transform:scale(.975)}[hidden]{display:none!important}
   <section class="intro"><div class="kicker" id="chapter">01 · FIRST TOUCH</div><h1 id="title">たった一枚、動かす。</h1><p class="subtitle" id="subtitle">1枚だけ動かして、見える色の面積を合わせよう。</p></section>
   <section class="metrics" aria-label="各色の見える面積"><div class="metrics-header"><strong>見えている面積</strong><span>大きな数字が目標 · 下が現在</span></div><div id="metricrow" class="metricrow"></div></section>
   <section id="arena" class="arena"><div class="arena-head"><span class="beat"><i id="beatDot"></i><span id="beatText">ONE MOVE · 1枚だけ</span></span><em id="boardSize">5 × 4</em></div><div id="boardspace" class="boardspace"><div id="board" class="board"><div class="basegrid"></div></div></div><div id="arenaFoot" class="arena-footer">紙を1枚だけ選んで、すっと動かす</div></section>
-  <section class="dock"><div class="dockheader"><b>重なった紙</b><span>下の色紙からも、直接動かせます</span></div><div id="tray" class="tray"></div></section>
+  <section class="dock"><div class="dockheader"><b>紙の重なり順</b><span>手前 <strong>→</strong> 奥（左ほど上）</span></div><div id="tray" class="tray" aria-label="左が一番上、右が一番下の紙"></div></section>
   <section class="actionzone"><div id="actionNote" class="action-note"><strong>どの一枚を動かす？</strong>重なりを見て、考えてみよう。</div><button id="actionButton" class="bigbtn secondary" hidden>もう一度</button></section>
 </main>
 <div id="dragFloat" class="dragfloat" hidden></div>
@@ -76,16 +76,70 @@ const clone=a=>a.map(r=>[...r]);
 function store(){try{localStorage.setItem('paperstack-one-move',JSON.stringify({stage,completed:[...complete],sound}))}catch{}}
 function regions(p=positions){const l=level(),c=Array(l.w*l.h).fill(0),nums=Array(l.dims.length).fill(0);for(let i=1;i<p.length;i++){const[x,y,w,h]=p[i];for(let yy=y;yy<y+h;yy++)for(let xx=x;xx<x+w;xx++)c[yy*l.w+xx]=i}for(let i of c)nums[i]++;return{colors:c,counts:nums}}
 function setup(i){cancelDrag();stage=clamp(i,0,LEVELS.length-1);positions=clone(level().initial);phase='ready';active=null;history=null;lastArea=regions().counts;store();render();requestAnimationFrame(fitBoard)}
-const soundFx={ctx:null,buffers:{},last:{},
- init(){if(!sound)return;try{if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;this.ctx=new AC();this.out=this.ctx.createGain();this.out.gain.value=.26;this.out.connect(this.ctx.destination)}if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{})}catch{}},
- buffer(kind){if(this.buffers[kind])return this.buffers[kind];const c=this.ctx,rate=c.sampleRate,duration=kind==='place'?0.055:kind==='win'?0.07:kind==='pick'?0.019:0.012,size=Math.max(32,Math.ceil(rate*duration)),b=c.createBuffer(1,size,rate),v=b.getChannelData(0);let seed=kind==='place'?777:kind==='pick'?332:kind==='tick'?666:987;let filt=0,prev=0;const low=kind==='place'?.18:kind==='win'?.12:.37;for(let i=0;i<size;i++){seed=(1664525*seed+1013904223)>>>0;let noise=((seed/4294967296)*2-1);filt+=low*(noise-filt);const hp=noise-filt;let attack=Math.min(1,i/(rate*.0006)),decay=Math.exp(-i/(rate*(kind==='place'?.007:kind==='win'?.014:.0026)));let signal=kind==='place'?(.60*filt+.18*hp):kind==='win'?(filt*.62+hp*.05):(hp*.55+filt*.22);v[i]=signal*attack*decay}
- this.buffers[kind]=b;return b},
- play(kind){if(!sound)return;this.init();if(!this.ctx||this.ctx.state!=='running')return;const now=this.ctx.currentTime;const gap=kind==='tick'?.040:.022;if(now-(this.last[kind]||0)<gap)return;this.last[kind]=now;let src=this.ctx.createBufferSource(),gain=this.ctx.createGain();src.buffer=this.buffer(kind);gain.gain.value=kind==='tick'?.19:kind==='pick'?.11:kind==='place'?.48:kind==='win'?.38:.27;src.connect(gain).connect(this.out);src.start(now);src.stop(now+src.buffer.duration+.005)}
+const soundFx={ctx:null,out:null,buffers:{},last:{},pending:null,stats:{tick:0,pick:0,place:0,win:0},
+ init(){
+  if(!sound)return false;
+  try{
+   if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
+    this.ctx=new AC({latencyHint:'interactive'});this.out=this.ctx.createGain();
+    // A short physical click should remain audible on a phone's tiny speakers.
+    this.out.gain.value=.79;this.out.connect(this.ctx.destination);
+   }
+   if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});
+   return this.ctx.state!=='closed';
+  }catch{return false}
+ },
+ buffer(kind){
+  if(this.buffers[kind])return this.buffers[kind];
+  const rate=this.ctx.sampleRate;
+  const seconds=kind==='place'?.044:kind==='win'?.085:kind==='pick'?.023:.016;
+  const count=Math.ceil(rate*seconds),buf=this.ctx.createBuffer(1,count,rate),v=buf.getChannelData(0);
+  // Two damped random-noise components; no pitched tones or harmony.
+  let seed=kind==='tick'?31391:kind==='pick'?45013:kind==='place'?98173:71267;
+  let low=0,last=0;const decay=kind==='tick'?.0054:kind==='pick'?.0085:kind==='place'?.014:.024;
+  for(let i=0;i<count;i++){
+   seed=(Math.imul(1664525,seed)+1013904223)>>>0;
+   const noise=seed/2147483648-1;
+   low+=.145*(noise-low);
+   const body=low,edge=noise-low;
+   let attack=Math.min(1,i/(rate*.00035));
+   const env=attack*Math.exp(-i/(rate*decay));
+   const texture=kind==='tick'?.56*body+.47*edge:kind==='place'?.79*body+.2*edge:.67*body+.33*edge;
+   v[i]=texture*env*.80;
+  }
+  this.buffers[kind]=buf;return buf;
+ },
+ play(kind){
+  if(!sound||!this.init())return;
+  // Schedule even while the AudioContext is resuming (not yet 'running').
+  const now=this.ctx.currentTime;
+  const gap=kind==='tick'?.023:.014;
+  if(this.last[kind]!==undefined&&now-this.last[kind]<gap)return;
+  this.last[kind]=now;
+  try{
+   const src=this.ctx.createBufferSource(),g=this.ctx.createGain();src.buffer=this.buffer(kind);
+   const volume={tick:.73,pick:.43,place:.92,win:.66};
+   g.gain.value=volume[kind]??.45;
+   src.connect(g).connect(this.out);src.start(now);
+   this.stats[kind]=(this.stats[kind]||0)+1;
+  }catch{}
+ }
 };
-function render(){const l=level();$('chapter').textContent=`${String(stage+1).padStart(2,'0')} · ${CHAPTERS[l.group]}`;$('title').textContent=l.title;$('stageNumber').textContent=String(stage+1).padStart(2,'0');$('stageCount').textContent=`/ ${LEVELS.length}`;$('subtitle').textContent=phase==='won'?'一枚の移動で、すべての面積がそろった。':phase==='tried'?'目標との差を確かめて、もう一度。':'1枚だけ動かして、各色の見える面積を合わせよう。';$('boardSize').textContent=`${l.w} × ${l.h}`;$('beatText').textContent=phase==='won'?'PERFECT · 完成':phase==='tried'?'ONE MOVE · やり直す':`ONE MOVE · 1枚だけ`;$('beatDot').className=phase==='won'?'win':'';$('arenaFoot').textContent=phase==='won'?'ぴたり。':phase==='tried'?'一度戻して、別の一手を試そう':active===null?'紙を1枚だけ選んで、すっと動かす':`${NAMES[active]}の紙を選択中`;renderMetrics();renderTray();renderBoard();renderAction();$('soundButton').classList.toggle('muted',!sound)}
+// The first direct touch unlocks sound on iOS Safari before the initial drag.
+document.addEventListener('pointerdown',()=>soundFx.init(),{capture:true,passive:true});
+function render(){const l=level();$('chapter').textContent=`${String(stage+1).padStart(2,'0')} · ${CHAPTERS[l.group]}`;$('title').textContent=l.title;$('stageNumber').textContent=String(stage+1).padStart(2,'0');$('stageCount').textContent=`/ ${LEVELS.length}`;$('subtitle').textContent=phase==='won'?'一枚の移動で、すべての面積がそろった。':phase==='tried'?'目標との差を確かめて、もう一度。':'1枚だけ動かして、各色の見える面積を合わせよう。';$('boardSize').textContent=`${l.w} × ${l.h}`;$('beatText').textContent=phase==='won'?'PERFECT · 完成':phase==='tried'?'ONE MOVE · やり直す':`ONE MOVE · 1枚だけ`;$('beatDot').className=phase==='won'?'win':'';$('arenaFoot').textContent=phase==='won'?'ぴたり。':phase==='tried'?'一度戻して、別の一手を試そう':active===null?'紙を1枚だけ選んで、すっと動かす':`${NAMES[active]}の紙を選択中`;renderMetrics();renderTray();renderBoard();renderAction();$('soundButton').classList.toggle('muted',!sound);$('soundButton').setAttribute('aria-label',sound?'効果音を消す':'効果音を鳴らす')}
 function renderMetrics(){const l=level(),now=lastArea;$('metricrow').style.setProperty('--num',l.dims.length);$('metricrow').innerHTML=l.target.map((goal,i)=>{const actual=now[i],hit=goal===actual;return `<div class="metric ${phase==='won'?'hit':phase==='tried'?(hit?'hit':'miss'):''}" style="--c:${PALETTE[i]}"><i class="colorbar"></i><div class="goal">${goal}</div><div class="current">いま ${actual}${phase==='tried'&&hit?' ✓':''}</div></div>`}).join('')}
-function renderTray(){const l=level(),f=Math.min(29/Math.max(...l.dims.map(d=>d[1])),44/Math.max(...l.dims.map(d=>d[0])));tray.style.setProperty('--num',l.dims.length);tray.innerHTML=l.dims.map((rect,i)=>{const[w,h]=rect;return `<div class="tile ${i===0?'fixed':''} ${i===active?'active':''}" data-paper="${i}" role="button" tabindex="0" aria-label="${NAMES[i]}の紙 ${w}マス×${h}マス${i===0?'、固定':''}"><div class="tile-paper" style="width:${Math.max(8,w*f)}px;height:${Math.max(8,h*f)}px;--c:${PALETTE[i]};--mini-cell:${f}px"></div><small>${i===0?'土台 · 固定':NAMES[i]+'の紙'}</small></div>`}).join('')}
-function renderBoard(){const l=level();board.style.setProperty('--base',PALETTE[0]);board.innerHTML='<div class="basegrid"></div>'+positions.map((r,i)=>{if(i===0)return '';const[x,y,w,h]=r;return `<div class="paper ${i===active?'picked':''} ${drag?.changed&&drag.i===i?'preview':''}" data-paper="${i}" style="z-index:${i+1};left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px;--paper-color:${PALETTE[i]}"></div>`}).join('')+(active!==null?(()=>{const[x,y,w,h]=positions[active];return `<div class="focusring ${drag?.changed?'moving':''}" style="left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px"></div>`})():'')}
+function renderTray(){
+ const l=level(),f=Math.min(29/Math.max(...l.dims.map(d=>d[1])),44/Math.max(...l.dims.map(d=>d[0]))),n=l.dims.length;
+ tray.style.setProperty('--num',n);
+ // The z-order is fixed: the far-left miniature is the FRONT layer, not paper 0.
+ tray.innerHTML=l.dims.map((_,j)=>n-1-j).map((i,rank)=>{
+  const[w,h]=l.dims[i],depth=rank===0?'いちばん上':rank===n-1?'土台':`上から${rank+1}枚目`;
+  const label=rank===0?'最上段':rank===n-1?'土台':`下から${n-1-rank+1}枚目`;
+  return `<div class="tile ${i===0?'fixed':''} ${i===active?'active':''}" data-paper="${i}" role="button" tabindex="0" aria-label="${depth}、${NAMES[i]}の紙 ${w}マス×${h}マス${i===0?'、固定':''}"><span class="layer-rank">${rank===0?'TOP':rank===n-1?'BASE':String(rank+1).padStart(2,'0')}</span><div class="tile-paper" style="width:${Math.max(8,w*f)}px;height:${Math.max(8,h*f)}px;--c:${PALETTE[i]};--mini-cell:${f}px"></div><small>${NAMES[i]}${i===0?' · 土台':''}</small></div>`
+ }).join('')
+}
+function renderBoard(){const l=level();board.style.setProperty('--base',PALETTE[0]);board.innerHTML='<div class="basegrid"></div>'+positions.map((r,i)=>{if(i===0)return '';const[x,y,w,h]=r;return `<div class="paper ${i===active?'picked':''} ${drag?.changed&&drag.i===i?'preview':''}" data-paper="${i}" style="z-index:${i+1};left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px;--paper-color:${PALETTE[i]}"></div>`}).join('')+(active!==null?(()=>{const[x,y,w,h]=positions[active];return `<div class="focusring ${drag?.changed?'moving':''}" style="left:${x*cell}px;top:${y*cell}px;width:${w*cell}px;height:${h*cell}px;--focus-color:${PALETTE[active]}"></div>`})():'')}
 function renderAction(){const note=$('actionNote'),b=$('actionButton');if(phase==='won'){note.innerHTML='<strong>美しく、そろった。</strong>次の重なりを見つけよう。';b.hidden=false;b.classList.remove('secondary');b.textContent=stage===LEVELS.length-1?'ステージを選ぶ':'次の一枚 →'}else if(phase==='tried'){note.innerHTML='<strong>惜しい。もう一度。</strong>どの色が増えたか見てみよう。';b.hidden=false;b.classList.add('secondary');b.textContent='↶ もう一度'}else{note.innerHTML='<strong>どの一枚を動かす？</strong>重なりを見て、考えてみよう。';b.hidden=true}}
 function fitBoard(){if(drag)return;const l=level(),space=$('boardspace'),maxW=space.clientWidth-12,maxH=space.clientHeight-12;if(maxW<=0||maxH<=0)return;cell=Math.min(57,maxW/l.w,maxH/l.h);board.style.width=`${l.w*cell}px`;board.style.height=`${l.h*cell}px`;board.style.setProperty('--cell',`${cell}px`);renderBoard()}
 function startDrag(e,i,source){if(i===0||phase!=='ready'||drag)return;e.preventDefault();soundFx.play('pick');active=i;const r=positions[i],b=board.getBoundingClientRect(),p=({x:(e.clientX-b.left)/cell,y:(e.clientY-b.top)/cell});let ax=source==='board'?clamp(p.x-r[0],0,r[2]):r[2]/2;let ay=source==='board'?clamp(p.y-r[1],0,r[3]):r[3]/2;drag={id:e.pointerId,i,source,sx:e.clientX,sy:e.clientY,x:e.clientX,y:e.clientY,ax,ay,start:[...r],changed:false,proposed:[...r],out:false,lastR:[r[0],r[1]]};soundFx.init();renderTray();renderBoard()}
@@ -107,7 +161,7 @@ tray.addEventListener('click',e=>{const tile=e.target.closest('[data-paper]');if
 tray.addEventListener('keydown',e=>{const tile=e.target.closest('[data-paper]');if(!tile)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();active=+tile.dataset.paper;renderTray();renderBoard()}else if(phase==='ready'&&active===+tile.dataset.paper&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const l=level(),r=positions[active],x=clamp(r[0]+(e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:0),0,l.w-r[2]),y=clamp(r[1]+(e.key==='ArrowUp'?-1:e.key==='ArrowDown'?1:0),0,l.h-r[3]);if(x!==r[0]||y!==r[1]){positions[active]=[x,y,r[2],r[3]];lastArea=regions().counts;phase=lastArea.every((n,i)=>n===level().target[i])?'won':'tried';if(phase==='won'){complete.add(stage);store()}render()}}});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();cancelDrag()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();resetMove()}});
 new ResizeObserver(()=>fitBoard()).observe($('boardspace'));setup(stage);
-window.__paperStack={get state(){return{stage,phase,positions:clone(positions),areas:regions().counts,target:[...level().target],selected:active}},playLevel:setup,reset:resetMove,solveCurrent(){if(phase!=='ready')return;const s=level().solution,idx=s.paper;positions[idx]=[...s.position];lastArea=regions().counts;phase=lastArea.every((n,i)=>n===level().target[i])?'won':'tried';if(phase==='won'){complete.add(stage);store()}render()},next(){setup(stage+1)}};
+window.__paperStack={get soundStats(){return {...soundFx.stats,context:soundFx.ctx?.state??'uninitialized'}},get state(){return{stage,phase,positions:clone(positions),areas:regions().counts,target:[...level().target],selected:active}},playLevel:setup,reset:resetMove,solveCurrent(){if(phase!=='ready')return;const s=level().solution,idx=s.paper;positions[idx]=[...s.position];lastArea=regions().counts;phase=lastArea.every((n,i)=>n===level().target[i])?'won':'tried';if(phase==='won'){complete.add(stage);store()}render()},next(){setup(stage+1)}};
 </script>
 </body>
 </html>
